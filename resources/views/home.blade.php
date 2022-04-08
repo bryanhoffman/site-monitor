@@ -17,12 +17,13 @@
                         @foreach ($apps as $app)
                             <tr>
                                 <td class="table-text">
-                                    <div>{{ $app->name }}</div>
+                                    <div>{{ $app->app_name }}</div>
                                 </td>
                             </tr>
                         @endforeach
                     @else
-                        <tr><td class="table-text">No apps added yet</td></tr>
+                        <tr><td class="table-text">No apps added yet</td></tr><br/>
+                        <a href="/connect">Connect to ServerPilot</a>
                     @endif
 
                 </div>

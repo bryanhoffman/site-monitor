@@ -22,4 +22,5 @@ Auth::routes(['register' => false]);
 // Routes for logged-in users
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/connect', 'HomeController@connect');
 });
