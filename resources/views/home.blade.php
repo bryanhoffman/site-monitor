@@ -17,10 +17,17 @@
                         @foreach ($apps as $app)
                             <tr>
                                 <td class="table-text">
-                                    <div>{{ $app->app_name }}</div>
+                                    <div>{{ $app->app_name }} | Status: @if ($app->status==1) Everything Looks Good! @elseif ($app->status==0) Needs Attention! @else Unknown  @endif </div>
+                                    @php $domains = json_decode($app->domains) @endphp
+                                    Domains: @foreach ($domains as $domain)
+                                        {{ $domain }}
+                                            @endforeach
                                 </td>
-                            </tr>
-                        @endforeach
+                            </tr><br/><hr>
+                            @endforeach
+                            <a href="/connect">Refresh List</a>&nbsp;|
+                            <a href="/status">Perform Status Check</a>
+
                     @else
                         <tr><td class="table-text">No apps added yet</td></tr><br/>
                         <a href="/connect">Connect to ServerPilot</a>

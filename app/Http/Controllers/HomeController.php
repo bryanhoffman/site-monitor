@@ -61,4 +61,28 @@ class HomeController extends Controller
 
         return Redirect::route('home');  
     }
+
+    public function status()
+    {
+        $apps = App::all();
+        foreach($apps as $app) {
+            // Assume app status good
+            $app->status = 1;
+            $domains = json_decode($app->domains);
+            foreach($domains as $domain) {
+                $ch = curl_init($domain);
+                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                $result = curl_exec($ch);
+                $httpcode = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+                curl_close($ch);
+                if($httpcode!=200) {
+                    $app->status = 0;
+                }
+            }
+            $app->save();
+        }
+
+        return Redirect::route('home');
+    }
 }
