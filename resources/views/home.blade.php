@@ -13,8 +13,18 @@
                             {{ session('status') }}
                         </div>
                     @endif
+                    @if (!$apps->isEmpty())
+                        @foreach ($apps as $app)
+                            <tr>
+                                <td class="table-text">
+                                    <div>{{ $app->name }}</div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr><td class="table-text">No apps added yet</td></tr>
+                    @endif
 
-                    {{ __('You are logged in!') }}
                 </div>
             </div>
         </div>
