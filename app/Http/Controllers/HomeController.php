@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\App;
+use Laravel\Dusk\Browser;
 
 class HomeController extends Controller
 {
@@ -68,6 +69,7 @@ class HomeController extends Controller
         foreach($apps as $app) {
             // Assume app status good
             $app->status = 1;
+            $resolved_domain = '';
             $domains = json_decode($app->domains);
             foreach($domains as $domain) {
                 $ch = curl_init($domain);
@@ -75,14 +77,36 @@ class HomeController extends Controller
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                 $result = curl_exec($ch);
                 $httpcode = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+                $resolved_domain = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
                 curl_close($ch);
                 if($httpcode!=200) {
                     $app->status = 0;
                 }
+            }
+            $filename = $app->app_name.time().'.png';
+            //$browser = new Browser();
+            //$browser->visit($domains[0])
+            //        ->storeSource($filename);
+            if($app->status == 1) {
+                $client = \Symfony\Component\Panther\Client::createChromeClient();
+                $crawler = $client->request('GET', $resolved_domain);
+                $client->waitFor('body');
+                sleep(2);
+                $client->takeScreenshot($filename); 
+                $app->latest_screenshot=$filename;
             }
             $app->save();
         }
 
         return Redirect::route('home');
     }
+
+    public function details($id)
+    {
+        $app = App::findOrFail($id);
+        return view('details', [
+            'app' => $app,
+        ]);
+    }
+
 }

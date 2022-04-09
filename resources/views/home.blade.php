@@ -17,7 +17,7 @@
                         @foreach ($apps as $app)
                             <tr>
                                 <td class="table-text">
-                                    <div>{{ $app->app_name }} | Status: @if ($app->status==1) Everything Looks Good! @elseif ($app->status==0) Needs Attention! @else Unknown  @endif </div>
+                                    <div><a href="/app/{{ $app->id }}">{{ $app->app_name }}</a> | Status: @if ($app->status==1) <span style="color:green">Everything Looks Good!</span> @elseif ($app->status==0) <span style="background-color: red">Needs Attention!</span> @else Unknown  @endif </div>
                                     @php $domains = json_decode($app->domains) @endphp
                                     Domains: @foreach ($domains as $domain)
                                         {{ $domain }}
