@@ -1,6 +1,6 @@
 # site-monitor
 
-![Dashboard showing application statuses](Screen Shot 2022-04-08 at 21.54.31.png)
+![Dashboard showing application statuses](https://raw.githubusercontent.com/bryanhoffman/site-monitor/master/Screen%20Shot%202022-04-08%20at%2021.54.31.png)
 
 Monitor your ServerPilot applications 
 
